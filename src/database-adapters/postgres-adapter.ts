@@ -1,9 +1,9 @@
 import { Pool } from 'pg';
 
-import { BaseAdapterInterface } from './interfaces/base-adapter.interface';
+import { BaseAdapter } from './interfaces/base-adapter.interface';
 import { PostgresConnectionOptions } from './interfaces/postgres-connection-options.interface';
 
-export class PostgresAdapter implements BaseAdapterInterface {
+export class PostgresAdapter implements BaseAdapter {
   private pool: Pool;
 
   constructor(private readonly connectionOptions: PostgresConnectionOptions) {}
