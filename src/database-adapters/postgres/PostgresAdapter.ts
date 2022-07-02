@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 
-import { BaseAdapter } from './interfaces/base-adapter.interface';
-import { PostgresConnectionOptions } from './interfaces/postgres-connection-options.interface';
+import { BaseAdapter } from '../BaseAdapter';
+import { PostgresConnectionOptions } from './interfaces/PostgresConnectionOptions';
 
 export class PostgresAdapter implements BaseAdapter {
   private pool: Pool;
