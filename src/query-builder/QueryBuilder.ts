@@ -1,7 +1,12 @@
 import { QueryProperties } from './QueryProperties';
 
+/**
+ * Class which is responsible for building the query
+ */
 export class QueryBuilder {
-  public readonly properties: QueryProperties;
+  private properties: QueryProperties;
 
-  constructor() {}
+  constructor() {
+    this.properties = new QueryProperties();
+  }
 }

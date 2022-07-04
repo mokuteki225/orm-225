@@ -1,25 +1,12 @@
-enum QueryOperator {
-  In = 'IN',
-  NotIn = 'NOT IN',
-  Between = 'BETWEEN',
-  NotBetween = 'NOT BETWEEN',
-  Like = 'LIKE',
-  NotLike = 'NOT LIKE',
-  ILike = 'ILIKE',
-  NotILike = 'NOT ILIKE',
-  Equal = '=',
-  NotEqual = '!=',
-  GreaterThan = '>',
-  GreaterThanEqual = '>=',
-  LowerThan = '<',
-  LowerThanEqual = '<=',
-  Null = 'IS NULL',
-  NotNull = 'IS NOT NULL',
-}
+import { QueryOperator } from './QueryOperator';
+import { DatabaseValue } from '../shared/DatabaseValue';
 
+/**
+ * Wrapper class for query operator which stores operator itself and its value
+ */
 export class QueryExpression {
   constructor(
     private readonly operator: QueryOperator,
-    private readonly value: string, // separate type for database value
+    private readonly value: DatabaseValue,
   ) {}
 }

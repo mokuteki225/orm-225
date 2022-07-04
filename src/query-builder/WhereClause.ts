@@ -1,6 +1,8 @@
 /**
  * Where clause interface
  */
+import { QueryExpression } from './QueryExpression';
+
 export interface WhereClause {
   /**
    * Type of where clause
@@ -15,6 +17,5 @@ export interface WhereClause {
   /**
    * Type of expression column
    */
-  // Separate interface for query expression
-  readonly expression: string;
+  readonly expression: QueryExpression;
 }
