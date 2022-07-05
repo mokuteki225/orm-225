@@ -1,8 +1,8 @@
+import { QueryExpression } from './QueryExpression';
+
 /**
  * Where clause interface
  */
-import { QueryExpression } from './QueryExpression';
-
 export interface WhereClause {
   /**
    * Type of where clause

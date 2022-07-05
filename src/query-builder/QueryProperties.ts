@@ -13,10 +13,26 @@ export class QueryProperties {
 
   public offset?: number;
 
-  constructor() {
+  /**
+   * Create an empty QueryProperties instance
+   */
+  public constructor();
+
+  /**
+   * Create a QueryProperties instance with certain fields values
+   */
+  public constructor(properties: Partial<QueryProperties>);
+
+  public constructor(properties?: Partial<QueryProperties>) {
+    if (properties) {
+      return Object.assign(this, properties);
+    }
+
     this.type = 'select';
     this.wheres = [];
     this.limit = 10;
     this.offset = 0;
+
+    return this;
   }
 }
