@@ -1,4 +1,9 @@
 /**
- * Type for all the possible query types
+ * Enum for all the possible query types
  */
-export type QueryType = 'select' | 'insert' | 'update' | 'delete';
+export enum QueryType {
+  Select = 'select',
+  Insert = 'insert',
+  Update = 'update',
+  Delete = 'delete',
+}

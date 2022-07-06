@@ -1,4 +1,5 @@
 import { QueryExpression } from './QueryExpression';
+import { WhereType } from './WhereType';
 
 /**
  * Where clause interface
@@ -7,7 +8,7 @@ export interface WhereClause {
   /**
    * Type of where clause
    */
-  readonly type: 'default' | 'or' | 'and' | 'not';
+  readonly type: WhereType;
 
   /**
    * Type of a column
