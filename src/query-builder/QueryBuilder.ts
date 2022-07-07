@@ -1,7 +1,8 @@
+import { WhereType } from './WhereType';
+import { QueryType } from './QueryType';
+import { WhereClause } from './WhereClause';
 import { QueryProperties } from './QueryProperties';
 import { QueryExpression } from './QueryExpression';
-import { WhereClause } from './WhereClause';
-import { WhereType } from './WhereType';
 
 /**
  * Class which is responsible for building the query
@@ -11,6 +12,52 @@ export class QueryBuilder {
 
   constructor() {
     this.properties = new QueryProperties();
+  }
+
+  /**
+   * Execute compiled SQL query
+   */
+  public execute() {}
+
+  /**
+   * Compile SQL query based on query properties
+   */
+  public compile() {}
+
+  /**
+   * Set select query type
+   */
+  public select(): QueryBuilder {
+    this.properties.type = QueryType.Select;
+
+    return this;
+  }
+
+  /**
+   * Set insert query type
+   */
+  public insert(): QueryBuilder {
+    this.properties.type = QueryType.Insert;
+
+    return this;
+  }
+
+  /**
+   * Set update query type
+   */
+  public update(): QueryBuilder {
+    this.properties.type = QueryType.Update;
+
+    return this;
+  }
+
+  /**
+   * Set delete query type
+   */
+  public delete(): QueryBuilder {
+    this.properties.type = QueryType.Delete;
+
+    return this;
   }
 
   /**

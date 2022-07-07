@@ -28,7 +28,7 @@ export class QueryProperties {
       return Object.assign(this, properties);
     }
 
-    this.type = 'select';
+    this.type = QueryType.Select;
     this.wheres = [];
     this.limit = 10;
     this.offset = 0;
