@@ -3,6 +3,7 @@ import { QueryType } from './QueryType';
 import { WhereClause } from './WhereClause';
 import { QueryProperties } from './QueryProperties';
 import { QueryExpression } from './QueryExpression';
+import { CompiledQuery } from '../query-compiler/CompiledQuery';
 
 /**
  * Class which is responsible for building the query
@@ -22,7 +23,7 @@ export class QueryBuilder {
   /**
    * Compile SQL query based on query properties
    */
-  public compile() {}
+  public compile(): CompiledQuery {}
 
   /**
    * Set select query type
