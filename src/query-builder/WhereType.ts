@@ -3,7 +3,7 @@
  */
 export enum WhereType {
   Default = 'default',
-  Or = 'or',
-  And = 'and',
-  Not = 'not',
+  Or = 'OR',
+  And = 'AND',
+  Not = 'NOT',
 }

@@ -9,4 +9,10 @@ export class QueryExpression {
     private readonly operator: QueryOperator,
     private readonly value: DatabaseValue,
   ) {}
+
+  public compile(): string {
+    const expression = this.operator + ' ' + this.value;
+
+    return expression;
+  }
 }

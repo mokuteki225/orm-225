@@ -4,6 +4,7 @@ import { WhereClause } from './WhereClause';
 import { QueryProperties } from './QueryProperties';
 import { QueryExpression } from './QueryExpression';
 import { CompiledQuery } from '../query-compiler/CompiledQuery';
+import { QueryCompiler } from '../query-compiler/QueryCompiler';
 
 /**
  * Class which is responsible for building the query
@@ -23,7 +24,13 @@ export class QueryBuilder {
   /**
    * Compile SQL query based on query properties
    */
-  public compile(): CompiledQuery {}
+  public compile(): CompiledQuery {
+    const compiler = new QueryCompiler(this.properties);
+
+    const compiledQuery = compiler.compile();
+
+    return compiledQuery;
+  }
 
   /**
    * Set select query type
