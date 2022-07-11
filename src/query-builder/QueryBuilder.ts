@@ -5,6 +5,7 @@ import { QueryProperties } from './QueryProperties';
 import { QueryExpression } from './QueryExpression';
 import { CompiledQuery } from '../query-compiler/CompiledQuery';
 import { QueryCompiler } from '../query-compiler/QueryCompiler';
+import { BaseAdapter } from '../database-adapters/BaseAdapter';
 
 /**
  * Class which is responsible for building the query
@@ -12,14 +13,18 @@ import { QueryCompiler } from '../query-compiler/QueryCompiler';
 export class QueryBuilder {
   private properties: QueryProperties;
 
-  constructor() {
+  constructor(private readonly adapter: BaseAdapter) {
     this.properties = new QueryProperties();
   }
 
   /**
    * Execute compiled SQL query
    */
-  public execute() {}
+  public execute() {
+    const { statement, variables } = this.compile();
+
+    return this.adapter.query(statement, variables);
+  }
 
   /**
    * Compile SQL query based on query properties
@@ -27,9 +32,18 @@ export class QueryBuilder {
   public compile(): CompiledQuery {
     const compiler = new QueryCompiler(this.properties);
 
-    const compiledQuery = compiler.compile();
+    const query = compiler.compile();
 
-    return compiledQuery;
+    return query;
+  }
+
+  /**
+   * Set query table name
+   */
+  public table(tableName: string): QueryBuilder {
+    this.properties.table = tableName;
+
+    return this;
   }
 
   /**
@@ -58,7 +72,6 @@ export class QueryBuilder {
 
     return this;
   }
-
   /**
    * Set delete query type
    */

@@ -6,10 +6,10 @@ export class CompiledQuery {
     /**
      * Statement of the compiled parameterized SQL query
      */
-    private readonly statement: string,
+    public readonly statement: string,
     /**
      * Array of variables of parameterized SQL query
      */
-    private readonly variables: any[],
+    public readonly variables: any[],
   ) {}
 }

@@ -1,5 +1,5 @@
-import { QueryExpression } from './QueryExpression';
 import { WhereType } from './WhereType';
+import { QueryExpression } from './QueryExpression';
 
 /**
  * Where clause interface
@@ -11,12 +11,12 @@ export interface WhereClause {
   readonly type: WhereType;
 
   /**
-   * Type of a column
+   * Column name
    */
   readonly column: string;
 
   /**
-   * Type of expression column
+   * Clause expression
    */
   readonly expression: QueryExpression;
 }

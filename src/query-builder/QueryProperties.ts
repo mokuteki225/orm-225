@@ -5,6 +5,8 @@ import { WhereClause } from './WhereClause';
  * Class of query properties that are used for further SQL compilation
  */
 export class QueryProperties {
+  public table: string;
+
   public type: QueryType;
 
   public wheres: WhereClause[];
@@ -12,7 +14,6 @@ export class QueryProperties {
   public limit?: number;
 
   public offset?: number;
-
   /**
    * Create an empty QueryProperties instance
    */
@@ -28,6 +29,7 @@ export class QueryProperties {
       return Object.assign(this, properties);
     }
 
+    this.table = '';
     this.type = QueryType.Select;
     this.wheres = [];
     this.limit = 10;
