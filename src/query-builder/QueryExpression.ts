@@ -6,7 +6,7 @@ import { DatabaseValue } from '../shared/DatabaseValue';
  */
 export class QueryExpression {
   constructor(
-    private readonly operator: QueryOperator,
-    private readonly value: DatabaseValue,
+    public readonly operator: QueryOperator,
+    public readonly value: DatabaseValue,
   ) {}
 }

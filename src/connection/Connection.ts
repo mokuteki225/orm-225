@@ -1,4 +1,5 @@
 import { DatabaseConnectionOptions } from './interfaces/DatabaseConnectionOptions';
+import { PostgresConnectionOptions } from '../database-adapters/postgres/interfaces/PostgresConnectionOptions';
 
 import { BaseAdapter } from '../database-adapters/BaseAdapter';
 import { PostgresAdapter } from '../database-adapters/postgres/PostgresAdapter';
@@ -13,7 +14,10 @@ export class Connection {
 
     switch (dialect) {
       case 'postgres': {
-        adapter = new PostgresAdapter(options);
+        const postgresOptions = options as PostgresConnectionOptions;
+
+        adapter = new PostgresAdapter(postgresOptions);
+
         break;
       }
 

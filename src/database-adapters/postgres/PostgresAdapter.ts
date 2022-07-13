@@ -9,10 +9,10 @@ export class PostgresAdapter implements BaseAdapter {
   constructor(private readonly connectionOptions: PostgresConnectionOptions) {}
 
   public async query<Entity>(
-    query: string,
+    statement: string,
     variables: any[],
   ): Promise<Entity[]> {
-    const { rows } = await this.pool.query<Entity>(query, variables);
+    const { rows } = await this.pool.query<Entity>(statement, variables);
 
     return rows;
   }

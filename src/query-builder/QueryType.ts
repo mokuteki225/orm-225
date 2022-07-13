@@ -2,8 +2,8 @@
  * Enum for all the possible query types
  */
 export enum QueryType {
-  Select = 'select',
-  Insert = 'insert',
-  Update = 'update',
-  Delete = 'delete',
+  Select = 'SELECT',
+  Insert = 'INSERT',
+  Update = 'UPDATE',
+  Delete = 'DELETE',
 }
