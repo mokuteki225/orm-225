@@ -116,17 +116,17 @@ export class QueryCompiler {
 
     for (let i = 0; i < length; i++) {
       const char = expression[i];
-      compiledExpression += char;
 
-      if (char !== ':' || i >= length - 1) {
+      if (char !== ':') {
+        compiledExpression += char;
+
         continue;
       }
 
-      let key = char[++i];
+      let key = '';
 
-      while (char[i] !== ' ') {
-        key += char[i];
-        i++;
+      while (++i < length && expression[i] !== ' ') {
+        key += expression[i];
       }
 
       const value = values[key];
@@ -135,8 +135,8 @@ export class QueryCompiler {
         throw new Error('There in no value under this name');
       }
 
-      compiledExpression += `$${this.variables.length + 1}`;
       this.variables.push(value);
+      compiledExpression += `$${this.variables.length}`;
     }
 
     return compiledExpression;
