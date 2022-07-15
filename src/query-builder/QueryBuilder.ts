@@ -2,10 +2,10 @@ import { WhereType } from './WhereType';
 import { QueryType } from './QueryType';
 import { WhereClause } from './WhereClause';
 import { QueryProperties } from './QueryProperties';
-import { QueryExpression } from './QueryExpression';
 import { CompiledQuery } from '../query-compiler/CompiledQuery';
 import { QueryCompiler } from '../query-compiler/QueryCompiler';
 import { BaseAdapter } from '../database-adapters/BaseAdapter';
+import { ExpressionValues } from './ExpressionValues';
 
 /**
  * Class which is responsible for building the query
@@ -84,12 +84,8 @@ export class QueryBuilder {
   /**
    * Add WHERE clause to properties array
    */
-  public where(column: string, expression: QueryExpression): QueryBuilder {
-    const where: WhereClause = {
-      column,
-      expression,
-      type: WhereType.Default,
-    };
+  public where(expression: string, values: ExpressionValues): QueryBuilder {
+    const where = new WhereClause(WhereType.Default, expression, values);
 
     this.properties.wheres.push(where);
 
@@ -99,12 +95,8 @@ export class QueryBuilder {
   /**
    * Add AND WHERE clause to properties array
    */
-  public andWhere(column: string, expression: QueryExpression): QueryBuilder {
-    const where: WhereClause = {
-      column,
-      expression,
-      type: WhereType.And,
-    };
+  public andWhere(expression: string, values: ExpressionValues): QueryBuilder {
+    const where = new WhereClause(WhereType.And, expression, values);
 
     this.properties.wheres.push(where);
 
@@ -114,12 +106,8 @@ export class QueryBuilder {
   /**
    * Add OR WHERE clause to properties array
    */
-  public orWhere(column: string, expression: QueryExpression): QueryBuilder {
-    const where: WhereClause = {
-      column,
-      expression,
-      type: WhereType.Or,
-    };
+  public orWhere(expression: string, values: ExpressionValues): QueryBuilder {
+    const where = new WhereClause(WhereType.Or, expression, values);
 
     this.properties.wheres.push(where);
 
@@ -129,12 +117,8 @@ export class QueryBuilder {
   /**
    * Add WHERE NOT clause to properties array
    */
-  public whereNot(column: string, expression: QueryExpression): QueryBuilder {
-    const where: WhereClause = {
-      column,
-      expression,
-      type: WhereType.Not,
-    };
+  public whereNot(expression: string, values: ExpressionValues): QueryBuilder {
+    const where = new WhereClause(WhereType.Not, expression, values);
 
     this.properties.wheres.push(where);
 

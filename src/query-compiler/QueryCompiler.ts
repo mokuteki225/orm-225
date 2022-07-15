@@ -3,6 +3,7 @@ import { DatabaseValue } from '../shared/DatabaseValue';
 import { QueryProperties } from '../query-builder/QueryProperties';
 import { WhereType } from '../query-builder/WhereType';
 import { QueryType } from '../query-builder/QueryType';
+import { ExpressionValues } from '../query-builder/ExpressionValues';
 
 /**
  * Compile SQL query based on QueryProperties
@@ -34,7 +35,7 @@ export class QueryCompiler {
   private select(): string {
     const base = `${QueryType.Select} * FROM ${this.properties.table}`;
 
-    const statements = [base];
+    const statements: string[] = [base];
 
     if (this.properties.wheres.length) {
       const where = this.where();
@@ -62,10 +63,12 @@ export class QueryCompiler {
   /**
    * Compile SQL WHERE clause */
   private where(): string {
-    const statements: string[] = ['WHERE'];
+    const base = 'WHERE';
+
+    const statements: string[] = [base];
 
     for (let i = 0; i < this.properties.wheres.length; i++) {
-      const { type, column, expression } = this.properties.wheres[i];
+      const { type, expression, values } = this.properties.wheres[i];
 
       let statement = '';
 
@@ -73,10 +76,9 @@ export class QueryCompiler {
         statement += `${type} `;
       }
 
-      statement += `${column} ${expression.operator} $${this.variables.length}`;
+      statement += `${this.expression(expression, values)}`;
 
       statements.push(statement);
-      this.variables.push(expression.value);
     }
 
     const statement = statements.join(' ');
@@ -100,5 +102,43 @@ export class QueryCompiler {
     const statement = `OFFSET ${this.properties.offset}`;
 
     return statement;
+  }
+
+  /**
+   * Compile query expression
+   *
+   * Example: 'uuid = :uuid' => 'uuid = $1'
+   */
+  private expression(expression: string, values: ExpressionValues): string {
+    const length = expression.length;
+
+    let compiledExpression = '';
+
+    for (let i = 0; i < length; i++) {
+      const char = expression[i];
+      compiledExpression += char;
+
+      if (char !== ':' || i >= length - 1) {
+        continue;
+      }
+
+      let key = char[++i];
+
+      while (char[i] !== ' ') {
+        key += char[i];
+        i++;
+      }
+
+      const value = values[key];
+
+      if (!value) {
+        throw new Error('There in no value under this name');
+      }
+
+      compiledExpression += `$${this.variables.length + 1}`;
+      this.variables.push(value);
+    }
+
+    return compiledExpression;
   }
 }

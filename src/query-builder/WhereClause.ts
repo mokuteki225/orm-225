@@ -1,22 +1,22 @@
 import { WhereType } from './WhereType';
-import { QueryExpression } from './QueryExpression';
+import { ExpressionValues } from './ExpressionValues';
 
 /**
- * Where clause interface
+ * Where clause class
  */
-export interface WhereClause {
-  /**
-   * Type of where clause
-   */
-  readonly type: WhereType;
-
-  /**
-   * Column name
-   */
-  readonly column: string;
-
-  /**
-   * Clause expression
-   */
-  readonly expression: QueryExpression;
+export class WhereClause {
+  constructor(
+    /**
+     * Type of where clause
+     */
+    public readonly type: WhereType,
+    /**
+     * Clause expression values
+     */
+    public readonly expression: string,
+    /**
+     * Clause expression
+     */
+    public readonly values: ExpressionValues,
+  ) {}
 }
