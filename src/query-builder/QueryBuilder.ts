@@ -1,11 +1,11 @@
+import { BaseAdapter } from '../database-adapters/BaseAdapter';
 import { WhereType } from './WhereType';
 import { QueryType } from './QueryType';
+import { ValuesObject } from '../shared/ValuesObject';
 import { WhereClause } from './WhereClause';
 import { QueryProperties } from './QueryProperties';
 import { CompiledQuery } from '../query-compiler/CompiledQuery';
 import { QueryCompiler } from '../query-compiler/QueryCompiler';
-import { BaseAdapter } from '../database-adapters/BaseAdapter';
-import { ExpressionValues } from './ExpressionValues';
 
 /**
  * Class which is responsible for building the query
@@ -84,7 +84,7 @@ export class QueryBuilder {
   /**
    * Add WHERE clause to properties array
    */
-  public where(expression: string, values: ExpressionValues): QueryBuilder {
+  public where(expression: string, values: ValuesObject): QueryBuilder {
     const where = new WhereClause(WhereType.Default, expression, values);
 
     this.properties.wheres.push(where);
@@ -95,7 +95,7 @@ export class QueryBuilder {
   /**
    * Add AND WHERE clause to properties array
    */
-  public andWhere(expression: string, values: ExpressionValues): QueryBuilder {
+  public andWhere(expression: string, values: ValuesObject): QueryBuilder {
     const where = new WhereClause(WhereType.And, expression, values);
 
     this.properties.wheres.push(where);
@@ -106,7 +106,7 @@ export class QueryBuilder {
   /**
    * Add OR WHERE clause to properties array
    */
-  public orWhere(expression: string, values: ExpressionValues): QueryBuilder {
+  public orWhere(expression: string, values: ValuesObject): QueryBuilder {
     const where = new WhereClause(WhereType.Or, expression, values);
 
     this.properties.wheres.push(where);
@@ -117,10 +117,28 @@ export class QueryBuilder {
   /**
    * Add WHERE NOT clause to properties array
    */
-  public whereNot(expression: string, values: ExpressionValues): QueryBuilder {
+  public whereNot(expression: string, values: ValuesObject): QueryBuilder {
     const where = new WhereClause(WhereType.Not, expression, values);
 
     this.properties.wheres.push(where);
+
+    return this;
+  }
+
+  /**
+   * Add SQL INSERT VALUES for a single entity
+   */
+  public values(values: ValuesObject): QueryBuilder {
+    this.properties.values = values;
+
+    return this;
+  }
+
+  /**
+   * Add SQL RETURNING clause
+   */
+  public returning(returning: string): QueryBuilder {
+    this.properties.returning = returning;
 
     return this;
   }

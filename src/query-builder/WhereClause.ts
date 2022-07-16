@@ -1,5 +1,5 @@
 import { WhereType } from './WhereType';
-import { ExpressionValues } from './ExpressionValues';
+import { ValuesObject } from '../shared/ValuesObject';
 
 /**
  * Where clause class
@@ -17,6 +17,6 @@ export class WhereClause {
     /**
      * Clause expression
      */
-    public readonly values: ExpressionValues,
+    public readonly values: ValuesObject,
   ) {}
 }

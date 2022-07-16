@@ -3,7 +3,7 @@ import { DatabaseValue } from '../shared/DatabaseValue';
 import { QueryProperties } from '../query-builder/QueryProperties';
 import { WhereType } from '../query-builder/WhereType';
 import { QueryType } from '../query-builder/QueryType';
-import { ExpressionValues } from '../query-builder/ExpressionValues';
+import { ValuesObject } from '../shared/ValuesObject';
 
 /**
  * Compile SQL query based on QueryProperties
@@ -22,11 +22,31 @@ export class QueryCompiler {
   public compile(): CompiledQuery {
     const { type } = this.properties;
 
-    if (type === QueryType.Select) {
-      const statement = this.select();
+    let statement = '';
 
-      return new CompiledQuery(statement, this.variables);
+    switch (type) {
+      case QueryType.Select: {
+        statement = this.select();
+
+        break;
+      }
+      case QueryType.Insert: {
+        statement = this.insert();
+
+        break;
+      }
+      case QueryType.Update: {
+      }
+      case QueryType.Delete: {
+      }
+      default: {
+        throw new Error('Incorrect query type');
+      }
     }
+
+    const compiledQuery = new CompiledQuery(statement, this.variables);
+
+    return compiledQuery;
   }
 
   /**
@@ -61,7 +81,39 @@ export class QueryCompiler {
   }
 
   /**
-   * Compile SQL WHERE clause */
+   * Compile SQL INSERT statement
+   */
+  private insert(): string {
+    const base = `INSERT INTO ${this.properties.table}`;
+
+    const statements: string[] = [base];
+
+    const isValuesObjectEmpty =
+      Object.keys(this.properties.values).length === 0;
+
+    if (isValuesObjectEmpty) {
+      throw new Error(
+        'You have passed an empty values object, use .values() method of the query builder',
+      );
+    }
+
+    const values = this.values();
+    statements.push(values);
+
+    if (this.properties.returning.length) {
+      const returning = this.returning();
+
+      statements.push(returning);
+    }
+
+    const statement = statements.join(' ');
+
+    return statement;
+  }
+
+  /**
+   * Compile SQL WHERE clause
+   */
   private where(): string {
     const base = 'WHERE';
 
@@ -105,11 +157,47 @@ export class QueryCompiler {
   }
 
   /**
+   * Compile SQL RETURNING clause
+   */
+  private returning(): string {
+    const statement = `RETURNING ${this.properties.returning}`;
+
+    return statement;
+  }
+
+  /**
+   * Compile fields and values for INSERT query
+   *
+   * Example: { name: 'Mary', age: 18 } => (name, age) VALUES ($1, $2)
+   */
+  private values(): string {
+    const valuesObject = this.properties.values;
+
+    const fields: string[] = [];
+    const values: string[] = [];
+
+    for (const key in valuesObject) {
+      const value = valuesObject[key];
+
+      fields.push(key);
+      this.variables.push(value);
+      values.push(`$${this.variables.length}`);
+    }
+
+    const compiledFields = fields.join(',');
+    const compiledValues = values.join(',');
+
+    const statement = `(${compiledFields}) VALUES (${compiledValues})`;
+
+    return statement;
+  }
+
+  /**
    * Compile query expression
    *
    * Example: 'uuid = :uuid' => 'uuid = $1'
    */
-  private expression(expression: string, values: ExpressionValues): string {
+  private expression(expression: string, values: ValuesObject): string {
     const length = expression.length;
 
     let compiledExpression = '';
