@@ -37,6 +37,11 @@ export class QueryProperties {
   public values?: ValuesObject;
 
   /**
+   * SQL SET VALUES for UPDATE query
+   */
+  public set?: ValuesObject;
+
+  /**
    * SQL RETURNING clause
    */
   public returning?: string;
@@ -62,6 +67,7 @@ export class QueryProperties {
     this.limit = 10;
     this.offset = 0;
     this.values = {};
+    this.set = {};
     this.returning = '';
 
     return this;

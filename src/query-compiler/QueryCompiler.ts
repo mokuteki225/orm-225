@@ -97,8 +97,46 @@ export class QueryCompiler {
       );
     }
 
-    const values = this.values();
-    statements.push(values);
+    statements.push(this.values());
+
+    if (this.properties.returning.length) {
+      const returning = this.returning();
+
+      statements.push(returning);
+    }
+
+    const statement = statements.join(' ');
+
+    return statement;
+  }
+
+  /**
+   * Compile SQL UPDATE statement
+   */
+  private update(): string {
+    const base = `UPDATE ${this.properties.table} SET`;
+
+    const statements: string[] = [];
+
+    const isSetObjectEmpty = Object.keys(this.properties.set).length === 0;
+
+    if (isSetObjectEmpty) {
+      throw new Error(
+        'You have passed an empty set object, use .set() method of the query builder',
+      );
+    }
+
+    const set = this.set();
+    statements.push(set);
+
+    if (!this.properties.wheres.length) {
+      throw new Error(
+        'You have passed an empty where object, use any of where methods of the query builder',
+      );
+    }
+
+    const where = this.where();
+    statements.push(where);
 
     if (this.properties.returning.length) {
       const returning = this.returning();
@@ -168,7 +206,7 @@ export class QueryCompiler {
   /**
    * Compile fields and values for INSERT query
    *
-   * Example: { name: 'Mary', age: 18 } => (name, age) VALUES ($1, $2)
+   * Example: { name: 'Mary', age: 18 } => '(name, age) VALUES ($1, $2)'
    */
   private values(): string {
     const valuesObject = this.properties.values;
@@ -188,6 +226,28 @@ export class QueryCompiler {
     const compiledValues = values.join(',');
 
     const statement = `(${compiledFields}) VALUES (${compiledValues})`;
+
+    return statement;
+  }
+
+  /**
+   * Compile set values for UPDATE query
+   *
+   * Example: { name: 'Mary' } => 'name = $1'
+   */
+  private set(): string {
+    const setObject = this.properties.set;
+
+    const statements: string[] = [];
+
+    for (const key in setObject) {
+      const value = setObject[key];
+
+      this.variables.push(value);
+      statements.push(`${key} = ${this.variables.length}`);
+    }
+
+    const statement = statements.join(',');
 
     return statement;
   }

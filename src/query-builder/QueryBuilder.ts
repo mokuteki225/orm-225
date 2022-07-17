@@ -135,6 +135,15 @@ export class QueryBuilder {
   }
 
   /**
+   * Add SQL UPDATE SET VALUES for a single entity
+   */
+  public set(set: ValuesObject): QueryBuilder {
+    this.properties.set = set;
+
+    return this;
+  }
+
+  /**
    * Add SQL RETURNING clause
    */
   public returning(returning: string): QueryBuilder {
