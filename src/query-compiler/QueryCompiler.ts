@@ -97,7 +97,8 @@ export class QueryCompiler {
       );
     }
 
-    statements.push(this.values());
+    const values = this.values();
+    statements.push(values);
 
     if (this.properties.returning.length) {
       const returning = this.returning();
