@@ -36,8 +36,14 @@ export class QueryCompiler {
         break;
       }
       case QueryType.Update: {
+        statement = this.update();
+
+        break;
       }
       case QueryType.Delete: {
+        statement = this.delete();
+
+        break;
       }
       default: {
         throw new Error('Incorrect query type');
@@ -117,7 +123,7 @@ export class QueryCompiler {
   private update(): string {
     const base = `UPDATE ${this.properties.table} SET`;
 
-    const statements: string[] = [];
+    const statements: string[] = [base];
 
     const isSetObjectEmpty = Object.keys(this.properties.set).length === 0;
 
@@ -143,6 +149,25 @@ export class QueryCompiler {
       const returning = this.returning();
 
       statements.push(returning);
+    }
+
+    const statement = statements.join(' ');
+
+    return statement;
+  }
+
+  /**
+   * Compile SQL DELETE statement
+   */
+  private delete(): string {
+    const base = `DELETE FROM ${this.properties.table}`;
+
+    const statements: string[] = [base];
+
+    if (this.properties.wheres.length) {
+      const where = this.where();
+
+      statements.push(where);
     }
 
     const statement = statements.join(' ');
