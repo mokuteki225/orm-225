@@ -270,7 +270,7 @@ export class QueryCompiler {
       const value = setObject[key];
 
       this.variables.push(value);
-      statements.push(`${key} = ${this.variables.length}`);
+      statements.push(`${key} = $${this.variables.length}`);
     }
 
     const statement = statements.join(',');

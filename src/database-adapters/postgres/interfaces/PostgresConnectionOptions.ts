@@ -8,9 +8,9 @@ export interface PostgresConnectionOptions {
   readonly dialect: 'postgres';
 
   /**
-   * Database username
+   * Database user
    */
-  readonly username: string;
+  readonly user: string;
 
   /**
    * Database name

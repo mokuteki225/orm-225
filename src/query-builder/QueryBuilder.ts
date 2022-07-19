@@ -20,7 +20,7 @@ export class QueryBuilder {
   /**
    * Execute compiled SQL query
    */
-  public execute() {
+  public async execute() {
     const { statement, variables } = this.compile();
 
     return this.adapter.query(statement, variables);
