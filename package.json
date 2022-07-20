@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "mysql": "^2.18.1",
     "pg": "^8.7.3"
   },
   "devDependencies": {
+    "@types/mysql": "^2.15.21",
     "@types/pg": "^8.6.5",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",

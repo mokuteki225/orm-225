@@ -30,7 +30,7 @@ export class QueryBuilder {
    * Compile SQL query based on query properties
    */
   public compile(): CompiledQuery {
-    const compiler = new QueryCompiler(this.properties);
+    const compiler = new QueryCompiler(this.adapter.dialect, this.properties);
 
     const query = compiler.compile();
 

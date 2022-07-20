@@ -1,11 +1,12 @@
 /**
- * Connection options for Postgres
+ * Connection options for MySQL
  */
-export interface PostgresConnectionOptions {
+
+export interface MySqlConnectionOptions {
   /**
    * Database dialect
    */
-  readonly dialect: 'postgres';
+  readonly dialect: 'mysql';
 
   /**
    * Database user
@@ -23,12 +24,12 @@ export interface PostgresConnectionOptions {
   readonly password: string;
 
   /**
+   * database host
+   */
+  readonly host: string;
+
+  /**
    * Database port
    */
   readonly port: number;
-
-  /**
-   * Database host
-   */
-  readonly host: string;
 }

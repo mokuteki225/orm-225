@@ -4,6 +4,7 @@ import { QueryProperties } from '../query-builder/QueryProperties';
 import { WhereType } from '../query-builder/WhereType';
 import { QueryType } from '../query-builder/QueryType';
 import { ValuesObject } from '../shared/ValuesObject';
+import { DatabaseDialect } from '../connection/DatabaseDialect';
 
 /**
  * Compile SQL query based on QueryProperties
@@ -14,7 +15,10 @@ export class QueryCompiler {
    */
   private variables: DatabaseValue[] = [];
 
-  constructor(private readonly properties: QueryProperties) {}
+  constructor(
+    private readonly dialect: DatabaseDialect,
+    private readonly properties: QueryProperties,
+  ) {}
 
   /**
    * Compile query based on QueryProperties
@@ -245,7 +249,7 @@ export class QueryCompiler {
 
       fields.push(key);
       this.variables.push(value);
-      values.push(`$${this.variables.length}`);
+      values.push(this.placeholder());
     }
 
     const compiledFields = fields.join(',');
@@ -270,7 +274,7 @@ export class QueryCompiler {
       const value = setObject[key];
 
       this.variables.push(value);
-      statements.push(`${key} = $${this.variables.length}`);
+      statements.push(`${key} = ${this.placeholder()}`);
     }
 
     const statement = statements.join(',');
@@ -310,9 +314,36 @@ export class QueryCompiler {
       }
 
       this.variables.push(value);
-      compiledExpression += `$${this.variables.length}`;
+      compiledExpression += this.placeholder();
     }
 
     return compiledExpression;
+  }
+
+  private placeholder(): string {
+    let placeholder = '';
+
+    switch (this.dialect) {
+      case 'postgres': {
+        placeholder = `$${this.variables.length}`;
+
+        break;
+      }
+      case 'mysql': {
+        placeholder = '?';
+
+        break;
+      }
+      case 'sqlite': {
+        placeholder = '?';
+
+        break;
+      }
+      default: {
+        throw new Error('Unknown database dialect');
+      }
+    }
+
+    return placeholder;
   }
 }

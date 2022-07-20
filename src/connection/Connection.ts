@@ -1,9 +1,14 @@
-import { DatabaseConnectionOptions } from './interfaces/DatabaseConnectionOptions';
-import { PostgresConnectionOptions } from '../database-adapters/postgres/interfaces/PostgresConnectionOptions';
+import { DatabaseConnectionOptions } from './DatabaseConnectionOptions';
+import { PostgresConnectionOptions } from '../database-adapters/postgres/PostgresConnectionOptions';
 
 import { BaseAdapter } from '../database-adapters/BaseAdapter';
 import { PostgresAdapter } from '../database-adapters/postgres/PostgresAdapter';
+import { MySqlConnectionOptions } from '../database-adapters/mysql/MySqlConnectionOptions';
+import { MySqlAdapter } from '../database-adapters/mysql/MySqlAdapter';
 
+/**
+ * Database connection class
+ */
 export class Connection {
   public static async connect(
     options: DatabaseConnectionOptions,
@@ -17,6 +22,14 @@ export class Connection {
         const postgresOptions = options as PostgresConnectionOptions;
 
         adapter = new PostgresAdapter(postgresOptions);
+
+        break;
+      }
+
+      case 'mysql': {
+        const mysqlOptions = options as MySqlConnectionOptions;
+
+        adapter = new MySqlAdapter(mysqlOptions);
 
         break;
       }
