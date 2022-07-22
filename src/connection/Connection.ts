@@ -5,6 +5,8 @@ import { BaseAdapter } from '../database-adapters/BaseAdapter';
 import { PostgresAdapter } from '../database-adapters/postgres/PostgresAdapter';
 import { MySqlConnectionOptions } from '../database-adapters/mysql/MySqlConnectionOptions';
 import { MySqlAdapter } from '../database-adapters/mysql/MySqlAdapter';
+import { SqliteConnectionOptions } from '../database-adapters/sqlite/SqliteConnectionOptions';
+import { SqliteAdapter } from '../database-adapters/sqlite/SqliteAdapter';
 
 /**
  * Database connection class
@@ -30,6 +32,14 @@ export class Connection {
         const mysqlOptions = options as MySqlConnectionOptions;
 
         adapter = new MySqlAdapter(mysqlOptions);
+
+        break;
+      }
+
+      case 'sqlite': {
+        const sqliteOptions = options as SqliteConnectionOptions;
+
+        adapter = new SqliteAdapter(sqliteOptions);
 
         break;
       }

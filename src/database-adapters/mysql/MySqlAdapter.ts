@@ -14,14 +14,11 @@ export class MySqlAdapter implements BaseAdapter {
     statement: string,
     variables: any[],
   ): Promise<Entity[]> {
-    return new Promise((resolve, reject) => {
-      this.pool.query(statement, variables, (err, result) => {
-        if (err) {
-          reject(err.message);
-        }
+    return new Promise<Entity[]>((resolve, reject) => {
+      const callback = (err, result) =>
+        err ? reject(err.message) : resolve(result);
 
-        resolve(result);
-      });
+      this.pool.query(statement, variables, callback);
     });
   }
 
