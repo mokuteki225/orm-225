@@ -1,6 +1,7 @@
 import { BaseAdapter } from '../database-adapters/BaseAdapter';
-import { WhereType } from './WhereType';
+import { JoinType } from './JoinType';
 import { QueryType } from './QueryType';
+import { WhereType } from './WhereType';
 import { ValuesObject } from '../shared/ValuesObject';
 import { WhereClause } from './WhereClause';
 import { QueryProperties } from './QueryProperties';
@@ -148,6 +149,58 @@ export class QueryBuilder {
    */
   public returning(returning: string): QueryBuilder {
     this.properties.returning = returning;
+
+    return this;
+  }
+
+  /**
+   * Add SQL INNER JOIN
+   */
+  public innerJoin(table: string, expression: string): QueryBuilder {
+    this.properties.joins.push({
+      table,
+      expression,
+      type: JoinType.Inner,
+    });
+
+    return this;
+  }
+
+  /**
+   * Add SQL LEFT JOIN
+   */
+  public leftJoin(table: string, expression: string): QueryBuilder {
+    this.properties.joins.push({
+      table,
+      expression,
+      type: JoinType.Left,
+    });
+
+    return this;
+  }
+
+  /**
+   * Add SQL RIGHT JOIN
+   */
+  public rightJoin(table: string, expression: string): QueryBuilder {
+    this.properties.joins.push({
+      table,
+      expression,
+      type: JoinType.Right,
+    });
+
+    return this;
+  }
+
+  /**
+   * Add SQL OUTER JOIN
+   */
+  public outerJoin(table: string, expression: string): QueryBuilder {
+    this.properties.joins.push({
+      table,
+      expression,
+      type: JoinType.Outer,
+    });
 
     return this;
   }

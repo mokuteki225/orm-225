@@ -5,6 +5,7 @@ import { WhereType } from '../query-builder/WhereType';
 import { QueryType } from '../query-builder/QueryType';
 import { ValuesObject } from '../shared/ValuesObject';
 import { DatabaseDialect } from '../connection/DatabaseDialect';
+import { JoinType } from 'src/query-builder/JoinType';
 
 /**
  * Compile SQL query based on QueryProperties
@@ -67,12 +68,6 @@ export class QueryCompiler {
 
     const statements: string[] = [base];
 
-    if (this.properties.wheres.length) {
-      const where = this.where();
-
-      statements.push(where);
-    }
-
     if (this.properties.limit >= 0) {
       const limit = this.limit();
 
@@ -83,6 +78,18 @@ export class QueryCompiler {
       const offset = this.offset();
 
       statements.push(offset);
+    }
+
+    if (this.properties.joins.length) {
+      const joins = this.join();
+
+      statements.push(joins);
+    }
+
+    if (this.properties.wheres.length) {
+      const wheres = this.where();
+
+      statements.push(wheres);
     }
 
     const statement = statements.join(' ');
@@ -278,6 +285,25 @@ export class QueryCompiler {
     }
 
     const statement = statements.join(',');
+
+    return statement;
+  }
+
+  /**
+   * Compile SQL JOIN clause
+   */
+  private join(): string {
+    const statements: string[] = [];
+
+    for (const join of this.properties.joins) {
+      const { type, table, expression } = join;
+
+      const statement = `${JoinType[type]} ${table} ON ${expression}`;
+
+      statements.push(statement);
+    }
+
+    const statement = statements.join(' ');
 
     return statement;
   }

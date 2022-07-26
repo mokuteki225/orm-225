@@ -1,6 +1,7 @@
 import { QueryType } from './QueryType';
 import { WhereClause } from './WhereClause';
 import { ValuesObject } from '../shared/ValuesObject';
+import { JoinClause } from './JoinClause';
 
 /**
  * Class of query properties that are used for further SQL compilation
@@ -19,7 +20,7 @@ export class QueryProperties {
   /**
    * SQL WHERE clause
    */
-  public wheres: WhereClause[];
+  public wheres?: WhereClause[];
 
   /**
    * SQL LIMIT clause
@@ -47,6 +48,11 @@ export class QueryProperties {
   public returning?: string;
 
   /**
+   * SQL JOIN clause
+   */
+  public joins?: JoinClause[];
+
+  /**
    * Create an empty QueryProperties instance
    */
   public constructor();
@@ -69,6 +75,7 @@ export class QueryProperties {
     this.values = {};
     this.set = {};
     this.returning = '';
+    this.joins = [];
 
     return this;
   }
