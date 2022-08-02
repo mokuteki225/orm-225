@@ -12,7 +12,7 @@ export class SqliteAdapter implements BaseAdapter {
 
   public async query<Entity>(
     statement: string,
-    variables: any[],
+    variables?: any[],
   ): Promise<Entity[]> {
     return new Promise<Entity[]>((resolve, reject) => {
       const callback = (result, err) => (err ? reject(err) : resolve(result));

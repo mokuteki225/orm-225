@@ -13,7 +13,7 @@ export class PostgresAdapter implements BaseAdapter {
 
   public async query<Entity>(
     statement: string,
-    variables: any[],
+    variables?: any[],
   ): Promise<Entity[]> {
     const { rows } = await this.pool.query<Entity>(statement, variables);
 

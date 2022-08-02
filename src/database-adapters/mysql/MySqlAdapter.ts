@@ -12,7 +12,7 @@ export class MySqlAdapter implements BaseAdapter {
 
   public async query<Entity>(
     statement: string,
-    variables: any[],
+    variables?: any[],
   ): Promise<Entity[]> {
     return new Promise<Entity[]>((resolve, reject) => {
       const callback = (err, result) =>
@@ -27,6 +27,6 @@ export class MySqlAdapter implements BaseAdapter {
   }
 
   public async disconnect(): Promise<void> {
-    await this.pool.end();
+    this.pool.end();
   }
 }

@@ -7,6 +7,7 @@ import { MySqlConnectionOptions } from '../database-adapters/mysql/MySqlConnecti
 import { MySqlAdapter } from '../database-adapters/mysql/MySqlAdapter';
 import { SqliteConnectionOptions } from '../database-adapters/sqlite/SqliteConnectionOptions';
 import { SqliteAdapter } from '../database-adapters/sqlite/SqliteAdapter';
+import { ConnectionManager } from './ConnectionManager';
 
 /**
  * Database connection class
@@ -50,6 +51,8 @@ export class Connection {
     }
 
     await adapter.connect();
+
+    ConnectionManager.getInstance().set('default', adapter);
 
     return adapter;
   }
