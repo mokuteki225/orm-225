@@ -105,10 +105,10 @@ export class QueryCompiler {
 
     const statements: string[] = [base];
 
-    const isValuesObjectEmpty =
-      Object.keys(this.properties.values).length === 0;
+    const valuesObjectHasProperties =
+      Object.keys(this.properties.values).length > 0;
 
-    if (isValuesObjectEmpty) {
+    if (!valuesObjectHasProperties) {
       throw new Error(
         'You have passed an empty values object, use .values() method of the query builder',
       );
@@ -136,9 +136,9 @@ export class QueryCompiler {
 
     const statements: string[] = [base];
 
-    const isSetObjectEmpty = Object.keys(this.properties.set).length === 0;
+    const setObjectHasProperties = Object.keys(this.properties.set).length > 0;
 
-    if (isSetObjectEmpty) {
+    if (!setObjectHasProperties) {
       throw new Error(
         'You have passed an empty set object, use .set() method of the query builder',
       );
